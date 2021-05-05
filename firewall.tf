@@ -6,9 +6,17 @@ resource "azurerm_network_security_group" "network-security-group" {
   resource_group_name = var.resource_group
 }
 
+locals {
+  subnet_id = replace(
+    replace(lower(azurerm_subnet.default-subnet.id), "microsoft.network/virtualnetworks", "Microsoft.Network/virtualNetworks"),
+    "resourcegroups",
+    "resourceGroups"
+  )
+}
+
 resource "azurerm_subnet_network_security_group_association" "network-security-group-association" {
   network_security_group_id = azurerm_network_security_group.network-security-group.id
-  subnet_id                 = azurerm_subnet.default-subnet.id
+  subnet_id                 = local.subnet_id
 }
 
 resource "azurerm_network_security_rule" "network-security-rules-inbound" {
