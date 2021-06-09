@@ -7,12 +7,7 @@ output "default_subnet_id" {
   value       = azurerm_subnet.default-subnet.id
 }
 
-output "network_id" {
-  description = "The id of the virtual network"
-  value       = azurerm_virtual_network.virtual-network.id
-}
-
-output "network_name" {
-  description = "The name of the virtual network"
-  value       = azurerm_virtual_network.virtual-network.name
+output "network" {
+  description = "The created network resource"
+  value       = azurerm_virtual_network.virtual-network
 }

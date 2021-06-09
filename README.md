@@ -133,13 +133,9 @@ Description: The id of the default subnet
 
 Description: The id of the gateway subnet
 
-### network\_id
+### network
 
-Description: The id of the virtual network
-
-### network\_name
-
-Description: The name of the virtual network
+Description: The created network resource
 <!-- END_TF_DOCS -->
 
 ## Development
