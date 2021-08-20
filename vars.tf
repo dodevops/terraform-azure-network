@@ -23,31 +23,24 @@ variable "network_cidr" {
   description = "The address space to use for the complete network"
 }
 
-variable "default_subnet_cidr" {
-  type        = string
-  description = "CIDR of the default subnet"
-}
-
-variable "gateway_subnet_cidr" {
-  type        = string
-  description = "CIDR of the gateway subnet. If not specified, Subnet Gateway will not be created"
-  default     = "NONE"
-}
-
-variable "rules" {
-  type = map(object({
-    priority                     = number,
-    source_address_prefixes      = list(string),
-    source_port_ranges           = list(string),
-    destination_address_prefixes = list(string),
-    destination_port_ranges      = list(string),
-    protocol                     = string,
-  }))
-  description = "A map of firewall rules to apply to the network security group of the virtual network"
-}
-
 variable "peering_remote_virtual_network_id" {
   type        = string
   default     = ""
   description = "The id of the remote virtual network to peer to, if required"
+}
+
+variable "subnets" {
+  type = map(object({
+    cidr              = list(string)
+    service_endpoints = list(string)
+    rules = map(object({
+      priority                     = number,
+      source_address_prefixes      = list(string),
+      source_port_ranges           = list(string),
+      destination_address_prefixes = list(string),
+      destination_port_ranges      = list(string),
+      protocol                     = string,
+    }))
+  }))
+  description = "A map of subnets (with a map of rules for each subnet to apply to the network security group of the virtual network for each of the subnets)"
 }

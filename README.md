@@ -36,23 +36,16 @@ No modules.
 
 The following resources are used by this module:
 
-- [azurerm_network_security_group.network-security-group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) (resource)
+- [azurerm_network_security_group.network-security-group-subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) (resource)
 - [azurerm_network_security_rule.network-security-rules-inbound](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) (resource)
-- [azurerm_subnet.default-subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
-- [azurerm_subnet.gateway-subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
-- [azurerm_subnet_network_security_group_association.network-security-group-association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) (resource)
+- [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) (resource)
+- [azurerm_subnet_network_security_group_association.nsgassociation-subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) (resource)
 - [azurerm_virtual_network.virtual-network](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) (resource)
 - [azurerm_virtual_network_peering.network-peering](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) (resource)
 
 ## Required Inputs
 
 The following input variables are required:
-
-### default\_subnet\_cidr
-
-Description: CIDR of the default subnet
-
-Type: `string`
 
 ### location
 
@@ -78,40 +71,36 @@ Description: Azure Resource Group to use
 
 Type: `string`
 
-### rules
-
-Description: A map of firewall rules to apply to the network security group of the virtual network
-
-Type:
-
-```hcl
-map(object({
-    priority                     = number,
-    source_address_prefixes      = list(string),
-    source_port_ranges           = list(string),
-    destination_address_prefixes = list(string),
-    destination_port_ranges      = list(string),
-    protocol                     = string,
-  }))
-```
-
 ### stage
 
 Description: Stage for this ressource group
 
 Type: `string`
 
+### subnets
+
+Description: A map of subnets (with a map of rules for each subnet to apply to the network security group of the virtual network for each of the subnets)
+
+Type:
+
+```hcl
+map(object({
+    cidr              = list(string)
+    service_endpoints = list(string)
+    rules = map(object({
+      priority                     = number,
+      source_address_prefixes      = list(string),
+      source_port_ranges           = list(string),
+      destination_address_prefixes = list(string),
+      destination_port_ranges      = list(string),
+      protocol                     = string,
+    }))
+  }))
+```
+
 ## Optional Inputs
 
 The following input variables are optional (have default values):
-
-### gateway\_subnet\_cidr
-
-Description: CIDR of the gateway subnet. If not specified, Subnet Gateway will not be created
-
-Type: `string`
-
-Default: `"NONE"`
 
 ### peering\_remote\_virtual\_network\_id
 
@@ -125,17 +114,13 @@ Default: `""`
 
 The following outputs are exported:
 
-### default\_subnet\_id
-
-Description: The id of the default subnet
-
-### gateway\_subnet\_id
-
-Description: The id of the gateway subnet
-
 ### network
 
 Description: The created network resource
+
+### subnet\_ids
+
+Description: Map of the created subnet ids
 <!-- END_TF_DOCS -->
 
 ## Development
