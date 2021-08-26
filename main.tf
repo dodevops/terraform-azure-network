@@ -5,18 +5,12 @@ resource "azurerm_virtual_network" "virtual-network" {
   resource_group_name = var.resource_group
 }
 
-resource "azurerm_subnet" "default-subnet" {
-  address_prefixes     = [var.default_subnet_cidr]
-  name                 = "default"
-  resource_group_name  = var.resource_group
-  virtual_network_name = azurerm_virtual_network.virtual-network.name
-  service_endpoints    = ["Microsoft.Sql", "Microsoft.Storage"]
-}
+resource "azurerm_subnet" "subnet" {
+  for_each = var.subnets
 
-resource "azurerm_subnet" "gateway-subnet" {
-  count                = var.gateway_subnet_cidr == "NONE" ? 0 : 1
-  name                 = "GatewaySubnet"
-  address_prefixes     = [var.gateway_subnet_cidr]
+  address_prefixes     = each.value.cidr
+  name                 = each.key
   resource_group_name  = var.resource_group
   virtual_network_name = azurerm_virtual_network.virtual-network.name
+  service_endpoints    = each.value.service_endpoints
 }
