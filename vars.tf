@@ -31,8 +31,9 @@ variable "peering_remote_virtual_network_id" {
 
 variable "subnets" {
   type = map(object({
-    cidr              = list(string)
-    service_endpoints = list(string)
+    cidr                                           = list(string)
+    service_endpoints                              = list(string)
+    enforce_private_link_endpoint_network_policies = bool
     rules = map(object({
       priority                     = number,
       source_address_prefixes      = list(string),
