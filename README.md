@@ -85,8 +85,12 @@ Type:
 
 ```hcl
 map(object({
-    cidr                                      = list(string)
-    service_endpoints                         = list(string)
+    cidr              = list(string)
+    service_endpoints = list(string)
+    service_delegations = map(object({
+      name    = string,
+      actions = list(string),
+    }))
     private_endpoint_network_policies_enabled = bool
     rules = map(object({
       priority                     = number,
