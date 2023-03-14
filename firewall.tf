@@ -1,12 +1,12 @@
 resource "azurerm_subnet_network_security_group_association" "nsgassociation-subnet" {
-  for_each = var.subnets
+  for_each = {for subnet, value in var.subnets: subnet => value if length(value.rules) > 0}
 
   subnet_id                 = azurerm_subnet.subnet[each.key].id
   network_security_group_id = azurerm_network_security_group.network-security-group-subnet[each.key].id
 }
 
 resource "azurerm_network_security_group" "network-security-group-subnet" {
-  for_each = var.subnets
+  for_each = {for subnet, value in var.subnets: subnet => value if length(value.rules) > 0}
 
   location            = var.location
   name                = "${lower(var.project)}${lower(var.stage)}netsg${each.key}"
