@@ -37,7 +37,7 @@ variable "subnets" {
       name    = string,
       actions = list(string),
     }))
-    private_endpoint_network_policies_enabled = bool
+    private_endpoint_network_policies = string
     rules = map(object({
       priority                     = number,
       source_address_prefixes      = list(string),
