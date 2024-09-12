@@ -25,5 +25,5 @@ resource "azurerm_subnet" "subnet" {
     }
   }
 
-  private_endpoint_network_policies_enabled = each.value.private_endpoint_network_policies_enabled
+  private_endpoint_network_policies = each.value.private_endpoint_network_policies
 }
