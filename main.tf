@@ -12,7 +12,13 @@ resource "azurerm_subnet" "subnet" {
   name                 = each.key
   resource_group_name  = var.resource_group
   virtual_network_name = azurerm_virtual_network.virtual-network.name
-  service_endpoints    = each.value.service_endpoints
+
+  dynamic "service_endpoint" {
+    for_each = each.value.service_endpoints
+    content {
+      service = service_endpoint.value
+    }
+  }
 
   dynamic "delegation" {
     for_each = each.value.service_delegations
