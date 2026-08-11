@@ -20,13 +20,17 @@ module "azure-network" {
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- terraform (>=1.0.0)
+
+- azurerm (>=5.0.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- azurerm
+- azurerm (>=5.0.0)
 
 ## Modules
 
